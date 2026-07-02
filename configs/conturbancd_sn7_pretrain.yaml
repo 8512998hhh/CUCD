@@ -1,0 +1,21 @@
+_BASE_: "base.yaml"
+SEED: 2
+NAME: "conturbancd_sn7_GLMamba"
+
+TRAINER:
+  LR: 1e-4
+  BATCH_SIZE: 4
+
+AUGMENTATION:
+  CROP_SIZE: 64
+  EVAL_PATCH_SIZE: 64
+
+MODEL:
+  EDGE_TYPE: 'dense'
+  TYPE: 'mtunetformer_glmamba'
+  USE_MAMBA: True
+  # Mamba specific params can be tuned here if we exposed them in config
+  # For now it uses the same params as TRANSFORMER_PARAMS (N_LAYERS, D_MODEL, etc.)
+
+DATASET:
+  NAME: 'sn7'

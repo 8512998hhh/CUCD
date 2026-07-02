@@ -1,0 +1,26 @@
+_BASE_: "base.yaml"
+SEED: 2
+NAME: "conturbancd_sn7_GLMamba_TGatev2"
+
+TRAINER:
+  LR: 1e-4
+  BATCH_SIZE: 4
+  EPOCHS: 30
+  PRETRAINED: True
+  NUM_SAMPLES: 512
+  TEMPERATURE: 0.15
+
+AUGMENTATION:
+  CROP_SIZE: 64
+  EVAL_PATCH_SIZE: 64
+
+MODEL:
+  EDGE_TYPE: 'dense'
+  TYPE: 'mtunetformer_glmamba'
+  USE_MAMBA: True
+
+DATASET:
+  NAME: 'sn7'
+
+DATALOADER:
+  TIMESERIES_LENGTH: 12
