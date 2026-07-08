@@ -1,0 +1,31 @@
+_BASE_: "base.yaml"
+SEED: 2
+NAME: "conturbancd_sn7_GLMamba_PointMono"
+
+TRAINER:
+  LR: 1e-4
+  BATCH_SIZE: 8
+  PRETRAINED: False
+  EPOCHS: 50
+
+  # ===== 时序平滑先验 (train_point_mono.py) =====
+  # 总权重：lambda_smooth * (lambda_tv * L_tv + lambda_curv * L_curv)
+  LAMBDA_SMOOTH: 0.1           # 全局缩放，优先调这一个
+  LAMBDA_TV: 0.5               # 一阶 TV 权重
+  LAMBDA_CURV: 0.5             # 二阶差分权重（0 = 关闭）
+  SMOOTH_DELAY_EPOCHS: 10      # 前 N epoch 辅助损失完全关闭，主任务先独立收敛
+
+AUGMENTATION:
+  CROP_SIZE: 64
+  EVAL_PATCH_SIZE: 64
+
+MODEL:
+  EDGE_TYPE: 'adjacent'
+  TYPE: 'mtunetformer_glmamba'
+  USE_MAMBA: True
+
+DATASET:
+  NAME: 'sn7'
+
+DATALOADER:
+  TIMESERIES_LENGTH: 12

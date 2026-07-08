@@ -1,0 +1,40 @@
+_BASE_: "base.yaml"
+SEED: 2
+NAME: "conturbancd_sn7_GLMamba_Mono"
+
+TRAINER:
+  LR: 1e-4
+  BATCH_SIZE: 6
+  PRETRAINED: False
+  EPOCHS: 50
+  # ── 单调辅助头超参 ──────────────────────────────────────────────────
+  # 单调头点监督权重（只作用于单次转变的标注点）
+  LAMBDA_MONO: 0.1
+  # 门控一致性损失权重（把自由头拉向单调头；多次变化像素自动退场）
+  LAMBDA_CONSIST: 0.1
+  # 门控锐度：越大则只有"几乎完美单次转变"的像素才被拉
+  # 建议范围 3~8；若一致性损失下降缓慢可适当减小
+  MONO_ALPHA: 5.0
+  # 辅助损失 warmup epoch 数：前 N epoch 线性升温，避免早期噪声特征干扰主干
+  MONO_WARMUP_EPOCHS: 5
+
+AUGMENTATION:
+  CROP_SIZE: 64
+  EVAL_PATCH_SIZE: 64
+
+MODEL:
+  EDGE_TYPE: 'dense'
+  TYPE: 'mtunetformer_glmamba'
+  USE_MAMBA: True
+  # 🚀 启用单调辅助头（双头一致性正则）
+  USE_MONOTONIC_AUX: True
+  # 若同时启用 CT 创新（两者可叠加）：
+  # USE_CONTINUOUS_TIME: True
+  # TS_SCALE: 1.0
+
+DATASET:
+  NAME: 'sn7'
+
+DATALOADER:
+  TIMESERIES_LENGTH: 12
+  INCLUDE_CHANGE_LABEL: False

@@ -1,0 +1,34 @@
+_BASE_: "base.yaml"
+SEED: 2
+NAME: "sn7_active_201901_201904"
+
+TRAINER:
+  LR: 1e-5
+  BATCH_SIZE: 1
+  EPOCHS: 20
+
+MODEL:
+  EDGE_TYPE: 'dense'
+  TYPE: 'mtunetformer_glmamba'
+  USE_MAMBA: True
+  PRETRAINED_PATH: '/root/autodl-tmp/ContUrbanCD-master/GLMamba_pre_SN7_e100_20260427/weights/conturbancd_sn7_GLMamba.pt'
+  # Mamba specific params can be tuned here if we exposed them in config
+  # For now it uses the same params as TRANSFORMER_PARAMS (N_LAYERS, D_MODEL, etc.)
+
+AUGMENTATION:
+  CROP_SIZE: 0
+  EVAL_PATCH_SIZE: 64
+  IMAGE_OVERSAMPLING_TYPE: 'change' # [none, change, semantic]
+  RANDOM_FLIP: False
+  RANDOM_ROTATE: False
+  COLOR_BLUR: True
+  COLOR_JITTER: True
+
+DATASET:
+  NAME: 'sn7_active'
+  START_TIME: '201801'
+  END_TIME: '201904'
+
+DATALOADER:
+  TIMESERIES_LENGTH: 4
+  TRAINING_MULTIPLIER: 3

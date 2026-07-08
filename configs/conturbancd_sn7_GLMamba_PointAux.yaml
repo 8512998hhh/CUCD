@@ -1,0 +1,36 @@
+_BASE_: "base.yaml"
+SEED: 2
+NAME: "conturbancd_sn7_GLMamba_PointAux"
+
+TRAINER:
+  LR: 1e-4
+  BATCH_SIZE: 4
+  PRETRAINED: False
+  EPOCHS: 50
+
+  # ===== 点监督 + dense 一致性 联合训练 (train_point_ssl_aux.py) =====
+  # 采样点数：每张图在已标注点 / 空间网格上采样的特征点数
+  AUX_NUM_SAMPLES: 512
+  # L_aug：同坐标双增强 dense 一致性（无需标签，最稳健的自监督主力项）
+  LAMBDA_AUG: 0.1
+  # L_tc：标签驱动的时序对比损失（InfoNCE，稳定点拉近、变化点作硬负样本）
+  LAMBDA_TC: 0.1
+  # 时序对比损失的温度（越小越“尖”，对负样本越敏感）
+  AUX_TEMPERATURE: 0.1
+  # 辅助损失 warmup：前若干 epoch 线性升温，避免早期特征污染主干
+  AUX_WARMUP_EPOCHS: 5
+
+AUGMENTATION:
+  CROP_SIZE: 64
+  EVAL_PATCH_SIZE: 64
+
+MODEL:
+  EDGE_TYPE: 'dense'
+  TYPE: 'mtunetformer_glmamba'
+  USE_MAMBA: True
+
+DATASET:
+  NAME: 'sn7'
+
+DATALOADER:
+  TIMESERIES_LENGTH: 12

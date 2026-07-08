@@ -1,0 +1,21 @@
+_BASE_: "base.yaml"
+SEED: 2
+
+TRAINER:
+  LR: 1e-4
+  BATCH_SIZE: 16
+
+MODEL:
+  EDGE_TYPE: 'dense'
+  TYPE: 'mtunetformer'
+
+AUGMENTATION:
+  CROP_SIZE: 64
+  EVAL_PATCH_SIZE: 64
+
+MODEL:
+  EDGE_TYPE: 'dense'
+  USE_MAMBA: False
+
+DATASET:
+  NAME: 'sn7'
